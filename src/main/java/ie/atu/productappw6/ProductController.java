@@ -1,5 +1,6 @@
 package ie.atu.productappw6;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class ProductController {
         return list;
     }
     @PostMapping("/addProduct")
-    public List<Product> newProduct(@RequestBody Product product){
+    public List<Product> newProduct(@Valid @RequestBody Product product){
         list = myService.addProduct(product);
         return list;
     }
