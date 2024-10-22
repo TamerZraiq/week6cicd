@@ -1,9 +1,7 @@
 package ie.atu.productappw6;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +15,33 @@ public class ProductController {
     public ProductController(ProductService myService) {
         this.myService = myService;
     }
-
-    @PostMapping
+    @GetMapping("/getProduct")
+    public List<Product> getProduct(){
+        return list;
+    }
+    @PostMapping("/addProduct")
     public List<Product> newProduct(@RequestBody Product product){
         list = myService.addProduct(product);
         return list;
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<List> updateProduct(@PathVariable int id, @RequestBody Product product) {
+        for (Product p : list) {
+            if (p.getId() == id) {
+                list.remove(p);
+            }
+        }
+        list = myService.addProduct(product);
+        return ResponseEntity.ok(list);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<List> deleteProduct(@PathVariable int id){
+        for(Product p : list){
+            if(p.getId() == id){
+                list.remove(p);
+            }
+        }
+        return ResponseEntity.ok(list);
     }
 }
